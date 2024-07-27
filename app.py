@@ -2,8 +2,14 @@ import pandas as pd
 import pickle
 import streamlit as st
 
-#Toma datos del archivo .csv y los almacena en el dataframe
-#dataframe = pd.read_csv("Datos/house-price.csv", index_col=0)
+import os
+
+file_directorio = os.path.dirname(os.path.abspath(__file__))
+path_model = os.path.join(file_directorio, 'artifacts/model.pkl')
+
+#Importar modelo entrenado
+with open(path_model,"rb") as ff:
+    model = pickle.load(ff)
 
 with st.sidebar.form('price'):
     Casa = {
@@ -20,9 +26,6 @@ name = "Wall street"
 
 df_casa = pd.DataFrame(Casa, index=[name])
 df_casa
-#Importar modelo entrenado
-with open("artifacts/model.pkl","rb") as ff:
-    model = pickle.load(ff)
 
 #Predecimos el valor de una casa
 ValorSugerido = model.predict(df_casa)
